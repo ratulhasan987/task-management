@@ -33,7 +33,8 @@ const AttachmentModal = ({ isOpen, onClose, onFileUpload, initialFiles }) => {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/attachments/upload',
+        // 'http://localhost:5000/api/attachments/upload',
+        'https://task-management-backend-phi-three.vercel.app/api/attachments/upload',
         formData
       );
       console.log(response);
@@ -97,9 +98,10 @@ const HorizontalView = () => {
     const fetchFiles = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5000/api/attachments/files'
+          // 'http://localhost:5000/api/attachments/files'
+          'https://task-management-backend-phi-three.vercel.app/api/attachments/files'
         );
-        // console.log(response);
+        console.log(response);
         setFilesCount(response.data);
       } catch (error) {
         console.error('Error fetching files:', error);

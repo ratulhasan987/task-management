@@ -9,6 +9,7 @@ connectDB();
 app.use(
   cors({
     origin: 'https://task-management-gamma-swart.vercel.app/',
+    // origin: 'http://localhost:3000/',
   })
 );
 app.use('/api/attachments', attachmentRoutes);
