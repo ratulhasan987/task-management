@@ -11,7 +11,7 @@ import {
   FaCalendarAlt,
 } from 'react-icons/fa';
 import axios from 'axios';
-
+import Swal from 'sweetalert2';
 // Modal component for file upload
 const AttachmentModal = ({ isOpen, onClose, onFileUpload, initialFiles }) => {
   const [files, setFiles] = useState(initialFiles || []);
@@ -19,13 +19,24 @@ const AttachmentModal = ({ isOpen, onClose, onFileUpload, initialFiles }) => {
   const handleFileChange = event => {
     const selectedFiles = Array.from(event.target.files);
     onFileUpload(selectedFiles);
-    setFiles(selectedFiles); 
+    setFiles(selectedFiles);
   };
 
   // Function to handle the API call when the button is clicked
   const handleFileUpload = async () => {
     if (files.length === 0) {
-      alert('Please select files to upload.');
+      // alert('Please select files to upload.');
+      Swal.fire({
+        title: 'Please select!',
+        text: 'Please select files to upload.',
+        customClass: {
+          popup: 'w-72 h-auto p-3',
+          title: 'text-sm',
+          content: 'text-xs',
+          confirmButton:
+            'bg-orange-400 text-white px-4 py-1 text-sm rounded-md',
+        },
+      });
       return;
     }
     const formData = new FormData();
@@ -33,24 +44,46 @@ const AttachmentModal = ({ isOpen, onClose, onFileUpload, initialFiles }) => {
 
     try {
       const response = await axios.post(
-        // 'http://localhost:5000/api/attachments/upload',
-        'https://task-management-backend-phi-three.vercel.app/api/attachments/upload',
+        'http://localhost:5000/api/attachments/upload',
+        // 'https://task-management-backend-phi-three.vercel.app/api/attachments/upload',
         formData
       );
       console.log(response);
-      alert('Files uploaded successfully.');
+      // alert('Files uploaded successfully.');
+      Swal.fire({
+        title: 'Success!',
+        text: 'Files uploaded successfully.',
+        customClass: {
+          popup: 'w-72 h-auto p-3',
+          title: 'text-sm',
+          content: 'text-xs',
+          confirmButton:
+            'bg-orange-400 text-white px-4 py-1 text-sm rounded-md',
+        },
+      });
       setFiles([]); // Clear files after upload
       onClose();
     } catch (error) {
       console.error('Error uploading files:', error);
-      alert('File upload failed.');
+      // alert('File upload failed.');
+      Swal.fire({
+        title: 'Failed!',
+        text: 'File upload failed.',
+        customClass: {
+          popup: 'w-72 h-auto p-3',
+          title: 'text-sm',
+          content: 'text-xs',
+          confirmButton:
+            'bg-orange-400 text-white px-4 py-1 text-sm rounded-md',
+        },
+      });
     }
   };
 
   return (
     isOpen && (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-        <div className="bg-orange-100 p-4 rounded-lg shadow-lg w-2/5 border border-orange-400">
+        <div className="bg-orange-100 p-4 rounded-lg shadow-lg md:w-2/5 w-10/12 border border-orange-400">
           <div className="flex justify-between">
             <h3 className="text-lg font-semibold mb-4">Upload Attachments</h3>
           </div>
@@ -66,7 +99,7 @@ const AttachmentModal = ({ isOpen, onClose, onFileUpload, initialFiles }) => {
             </ul>
           </div>
           {/* buttons */}
-          <div className="flex flex-col md:flex-row justify-end gap-4">
+          <div className="flex flex-col md:flex-row justify-end md:gap-4 gap-2">
             <button
               className="mt-4 px-4 py-2 bg-orange-400 hover:bg-orange-500 text-white rounded"
               onClick={handleFileUpload}
@@ -74,7 +107,7 @@ const AttachmentModal = ({ isOpen, onClose, onFileUpload, initialFiles }) => {
               Upload
             </button>
             <button
-              className="mt-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
+              className="md:mt-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
               onClick={onClose}
             >
               Cancel
@@ -98,8 +131,8 @@ const HorizontalView = () => {
     const fetchFiles = async () => {
       try {
         const response = await axios.get(
-          // 'http://localhost:5000/api/attachments/files'
-          'https://task-management-backend-phi-three.vercel.app/api/attachments/files'
+          'http://localhost:5000/api/attachments/files'
+          // 'https://task-management-backend-phi-three.vercel.app/api/attachments/files'
         );
         console.log(response);
         setFilesCount(response.data);
