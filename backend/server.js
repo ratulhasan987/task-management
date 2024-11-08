@@ -6,7 +6,11 @@ const cors = require('cors');
 const app = express();
 connectDB();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: 'https://task-management-gamma-swart.vercel.app/',
+  })
+);
 app.use('/api/attachments', attachmentRoutes);
 
 const PORT = process.env.PORT || 5000;
